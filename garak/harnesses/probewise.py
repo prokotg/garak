@@ -72,6 +72,7 @@ class ProbewiseHarness(Harness):
         for probe in probenames:
             if probe in finished:
                 print(f"{probe} already calculated! Skipping :)")
+        probenames = [probe for probe in probenames if probe not in finished]
         if buff_names is None:
             buff_names = []
 
