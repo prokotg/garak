@@ -75,7 +75,7 @@ def start_run():
         filename = _config.reporting.report_prefix + ".report.jsonl"
     _config.transient.report_filename = str(report_path / filename)
     _config.transient.reportfile = open(
-        _config.transient.report_filename, "w", buffering=1, encoding="utf-8"
+        _config.transient.report_filename, "a", buffering=1, encoding="utf-8"
     )
     setup_dict = {"entry_type": "start_run setup"}
     for k, v in _config.__dict__.items():

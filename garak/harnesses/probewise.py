@@ -53,7 +53,25 @@ class ProbewiseHarness(Harness):
         :param buff_names: a list of buff names to be used this run
         :type buff_names: List[str]
         """
-
+        import json
+        # some missing bits:
+        # 1. Checking whether we can actually append to the report  (garak version and other metadata)
+        # 2. When report is extended, last digest entry is not ended with new line. Needs to be handled 
+        # for this mechanism to be working
+        # 3. Tested on dan and extending probes from dan. Happy to extend testing to more probes.
+        # 4. The same should be implemented for PxD harness, ideally re-used
+        with open(_config.transient.reportfile.name, 'r') as f:
+            setup_lines = f.readlines()
+            data = [json.loads(line.strip()) for line in setup_lines]
+        finished = []
+        for entry in data:
+            if entry['entry_type'] == "digest":
+                # go over summary and collect all finished probes
+                for cat in entry['eval'].values():
+                    finished.extend(list(map(lambda x : f'probes.{x}', cat.keys())))
+        for probe in probenames:
+            if probe in finished:
+                print(f"{probe} already calculated! Skipping :)")
         if buff_names is None:
             buff_names = []
 
