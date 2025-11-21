@@ -208,6 +208,10 @@ class Generator(Configurable):
                     colour=f"#{garak.resources.theme.GENERATOR_RGB}",
                 )
                 generation_iterator.set_description(self.fullname[:55])
+                if hasattr(self, "vary_temp_each_call") or hasattr(self, "vary_seed_each_call"):
+                    import random
+
+                    random.seed(self.seed)
                 for i in generation_iterator:
                     output_one = self._call_model(
                         prompt, 1
